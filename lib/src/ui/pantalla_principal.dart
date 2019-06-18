@@ -34,8 +34,41 @@ class PantallaPrincipal extends StatelessWidget {
           ],
         ),
       ),
-      body: Center(
-        child: Text("OpenWeather API"),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: AlignmentDirectional.topCenter,
+            end: AlignmentDirectional.bottomCenter,
+            colors: [
+              Colors.white,
+              Colors.orange
+            ]
+          ),
+        ),
+        child: Center(
+          child: Flex(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            direction: Axis.vertical,
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text("Cudad"),
+                    Text("Temperatura"),
+                    Text("Descripcion"),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Icon(Icons.cloud),
+              )
+            ],
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
