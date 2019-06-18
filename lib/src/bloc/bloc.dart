@@ -11,6 +11,10 @@ class MiBloc {
     controlador.sink.add(contador++);
   }
 
+  void decrementar() {
+    controlador.sink.add(contador--);
+  }
+
   dispose() {
     controlador.close();
   }
