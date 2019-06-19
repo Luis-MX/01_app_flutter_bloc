@@ -4,6 +4,7 @@ import './bloc_pantalla.dart';
 import './copia_bloc_pantalla.dart';
 import './../bloc/weather_bloc.dart';
 import './../models/openweather_models.dart';
+import './mapa_pantalla.dart';
 
 class PantallaPrincipal extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -43,9 +44,12 @@ class PantallaPrincipal extends StatelessWidget {
           if (respuesta.hasData) {
             return Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: AlignmentDirectional.topCenter,
-                    end: AlignmentDirectional.bottomCenter,
+                gradient: RadialGradient(
+                  center: AlignmentDirectional.topCenter,
+                    radius: 4,
+                    stops: [
+                      0.0, 0.4
+                    ],
                     colors: [
                       Colors.white,
                       Colors.orange
@@ -71,7 +75,9 @@ class PantallaPrincipal extends StatelessWidget {
                     ),
                     Expanded(
                       flex: 2,
-                      child: Icon(Icons.cloud),
+                      child: Image.network(
+                          respuesta.data.urlIcono,
+                      ),
                     )
                   ],
                 ),
@@ -85,8 +91,12 @@ class PantallaPrincipal extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: blocNumeros.agregar,
+        child: Icon(Icons.map),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (ctx) => MapaPantalla()
+          ));
+        },
       ),
     );
   }
