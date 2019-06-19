@@ -5,9 +5,16 @@ import './copia_bloc_pantalla.dart';
 import './../bloc/weather_bloc.dart';
 import './../models/openweather_models.dart';
 import './mapa_pantalla.dart';
+import 'package:latlong/latlong.dart';
 
 class PantallaPrincipal extends StatelessWidget {
-  Widget build(BuildContext context) {
+  List<Color> colores = [
+    Colors.blue,
+    Colors.yellow,
+    Colors.orange,
+    Colors.red
+  ];
+   Widget build(BuildContext context) {
     weatherBloc.obtenerElTiempoActual();
     return Scaffold(
       drawer: Drawer(
@@ -42,6 +49,15 @@ class PantallaPrincipal extends StatelessWidget {
         stream: weatherBloc.streamCurrentWeather(),
         builder: (ctx, AsyncSnapshot<CurrentWeather> respuesta) {
           if (respuesta.hasData) {
+            Color color;
+            double temperatura = respuesta.data.temperatura;
+            if (temperatura < 15.0)
+              color = colores[0];
+            else if (temperatura < 25)
+              color = colores[1];
+            else if (temperatura < 40)
+              color = colores[2];
+            else color = colores[3];
             return Container(
               decoration: BoxDecoration(
                 gradient: RadialGradient(
@@ -52,7 +68,7 @@ class PantallaPrincipal extends StatelessWidget {
                     ],
                     colors: [
                       Colors.white,
-                      Colors.orange
+                      color
                     ]
                 ),
               ),
@@ -77,6 +93,7 @@ class PantallaPrincipal extends StatelessWidget {
                       flex: 2,
                       child: Image.network(
                           respuesta.data.urlIcono,
+                        fit: BoxFit.fill
                       ),
                     )
                   ],
@@ -92,10 +109,12 @@ class PantallaPrincipal extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.map),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
+        onPressed: () async {
+          LatLng ubicacion = await Navigator.of(context).push(MaterialPageRoute(
             builder: (ctx) => MapaPantalla()
           ));
+          if (ubicacion != null)
+            weatherBloc.obtenerElTiempoActualEn(ubicacion);
         },
       ),
     );
